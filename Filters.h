@@ -1,9 +1,22 @@
 
 #pragma once
 
-//Instead of deleting I_Nik will comment out, for case git fails.
+
 //#include "T_Project.h"
 
-bool _filters_connected() {
-	return true;
+#define _filters_connected true
+#define _filters_available 0
+// #define IMAGE Vector<Vector<Pixel>> //sth like that for return type
+
+/* Nikita's part
+IMAGE Filter_CMYK(IMAGE origin, int parameter){
+	//copy origin into a new image Result
+
+	//return Result;
 }
+*/
+
+/*Jan's part
+
+*/
+
