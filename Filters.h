@@ -8,6 +8,8 @@
 #define _filters_available 0
 // #define IMAGE Vector<Vector<Pixel>> //sth like that for return type
 
+//one more test with direct commit 
+
 /* Nikita's part
 IMAGE Filter_CMYK(IMAGE origin, int parameter){
 	//copy origin into a new image Result
