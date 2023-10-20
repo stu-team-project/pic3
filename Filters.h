@@ -1,4 +1,6 @@
+
 #pragma once
+
 
 //#include "T_Project.h"
 
@@ -17,3 +19,4 @@ IMAGE Filter_CMYK(IMAGE origin, int parameter){
 /*Jan's part
 
 */
+
