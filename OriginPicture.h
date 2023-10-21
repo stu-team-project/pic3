@@ -6,6 +6,7 @@
 #include <QtWidgets>
 
 #include "T_Project.h"
+#include "Filters.h"
 
 class OriginPicture :public QWidget 
 {
@@ -34,7 +35,7 @@ public:
 	void clearImage();
 	void clearVector2D();
 
-
+	QVector<QVector<QColor>>& getVec2D() { return PixelColor2D; };
 	QColor getColorFromVector(int x, int y) { return PixelColor2D.at(x).at(y); };
 public slots:
 	void cenzored();

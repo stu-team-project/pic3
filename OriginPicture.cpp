@@ -65,7 +65,7 @@ bool OriginPicture::openImage(const QString& fileName)
 		return false;
 
 	QSize newSize;
-	newSize.setWidth(getWidth());
+	newSize.setWidth(getWidth()*2+10);
 	newSize.setHeight(getHeight());
 
 	resizeImage(&image, newSize);
@@ -217,7 +217,13 @@ void OriginPicture::resizeImage(QImage* image, const QSize& newSize)
 
 void OriginPicture::cenzored()
 {
-	QPoint first, second;
+	//newPicture nPic(getVec2D());
 
-	
+	for (int i = 0; i < getHeight(); i++)
+	{
+		for (int j = 0; j < getWidth(); j++) 
+		{
+			image.setPixelColor(j + getWidth() + 10, i, getColorFromVector(i, j));
+		}
+	}
 }

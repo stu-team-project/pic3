@@ -51,10 +51,8 @@
     <QtMoc Include="OriginPicture.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Filters.h">
+    <QtMoc Include="Filters.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
+    </QtMoc>
   </ItemGroup>
 </Project>
