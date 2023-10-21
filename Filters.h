@@ -29,3 +29,10 @@ IMAGE Filter_CMYK(IMAGE origin, int parameter){
 
 */
 
+protected:
+	void paintEvent(QPaintEvent* event);
+private:
+	void resizeImage(QImage* updateImage, const QSize& newSize);
+
+	QImage updateImage;
+};
