@@ -1,5 +1,6 @@
 #include "Filters.h"
 
+
 newPicture::newPicture(QVector<QVector<QColor>>& PixelColor2D)
 {
 	QSize newSize;
@@ -38,4 +39,26 @@ void newPicture::resizeImage(QImage* updateImage, const QSize& newSize)
 	QPainter painter(&newImage);
 	painter.drawImage(QPoint(300, 300), *updateImage);
 	*updateImage = newImage;
+}
+
+Filters::Filters()
+{
+	
+}
+
+Filters::~Filters()
+{
+}
+
+void Filters::fisheyeFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D)
+{
+}
+
+void Filters::cmykFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D)
+{
+}
+
+void Filters::censore(QVector<QVector<QColor>>* VecOfPixelsColor2D)
+{
+	
 }

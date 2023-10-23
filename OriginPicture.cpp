@@ -69,46 +69,23 @@ bool OriginPicture::openImage(const QString& fileName)
 	newSize.setHeight(getHeight());
 
 	resizeImage(&image, newSize);
-	
-	for (int i = 0; i < getHeight(); i++)
-	{
-		for (int j = 0; j < getWidth(); j++) {
-			image.setPixelColor(j, i, getColorFromVector(i,j));
-		}
-	}
+	draw();
 
 	setStatusModified(true);
 	update();
 	return true;
 }
 
-void OriginPicture::drawSomethink()
+void OriginPicture::draw(int width)
 {
-	QColor tmp;
-	int red = 0;
-	int green = 0;
-	int blue = 0;
-	for (int i = 0; i < 300; i++)
+	for (int i = 0; i < getHeight(); i++)
 	{
-		for (int j = 0; j < 300; j++) {
-
-			if (red >255)
-			{
-				red = 0;
-				green = 0;
-				blue = 0;
-			}
-			tmp.setRed(red);
-			tmp.setGreen(green);
-			tmp.setBlue(blue);
-
-			this->setPixel(i, j, tmp);
-
-			red++;
-			green++;
-			blue++;
+		for (int j = 0; j < getWidth(); j++)
+		{
+			image.setPixelColor(j + width + 10, i, getColorFromVector(i, j));
 		}
 	}
+	update();
 }
 
 bool OriginPicture::loadImage(const QString& fileName)
@@ -189,6 +166,24 @@ void OriginPicture::clearVector2D()
 	PixelColor2D.clear();
 }
 
+void OriginPicture::censore()
+{
+	filter->censore(this->getVec2D());
+	draw(getWidth());
+}
+
+void OriginPicture::fisheye()
+{
+	filter->fisheyeFilter(this->getVec2D());
+	draw(getWidth());
+}
+
+void OriginPicture::cmyk()
+{
+	filter->cmykFilter(this->getVec2D());
+	draw(getWidth());
+}
+
 void OriginPicture::paintEvent(QPaintEvent* event)
 {
 	QPainter painter(this);
@@ -215,15 +210,14 @@ void OriginPicture::resizeImage(QImage* image, const QSize& newSize)
 	*image = newImage;
 }
 
-void OriginPicture::cenzored()
+void OriginPicture::draw()
 {
-	//newPicture nPic(getVec2D());
-
 	for (int i = 0; i < getHeight(); i++)
-	{
+    {
 		for (int j = 0; j < getWidth(); j++) 
 		{
-			image.setPixelColor(j + getWidth() + 10, i, getColorFromVector(i, j));
+			image.setPixelColor(j , i, getColorFromVector(i, j));
 		}
 	}
+	update();
 }

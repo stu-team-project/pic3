@@ -1,5 +1,5 @@
 #include "T_Project.h"
-#include "OriginPicture.h"
+//#include "OriginPicture.h"
 #include <fstream>
 #include <QFileDialog>
 #include <string>
@@ -12,84 +12,25 @@
 #include <QColorDialog>
 
 T_Project::T_Project(QWidget *parent)
-    : QMainWindow(parent), oPic(new OriginPicture(this))
+    : QMainWindow(parent), 
+    oPic(new OriginPicture(this))
+    //filter(new Filters(this))
+    //censore(new censored(oPic))
 {
-    //ui.setupUi(this);
-
     setCentralWidget(oPic);
-
     createActions();
     createMenus();
 
     setWindowTitle(tr("STU_TeamProject"));
 
+    //oPic->setVectorColor(this->getVectorColor2D());
+    //censore->setVectorColor(this->getVectorColor2D());
 
     resize(1000, 1000);
 }
 
 T_Project::~T_Project()
-{}
-
-
-void T_Project::on_pushButtonCenzored_clicked()
-{
-}
-
-void T_Project::on_pushButtonEdge_clicked()
-{
-}
-
-void T_Project::on_pushButtonBlur_clicked()
-{
-}
-
-void T_Project::on_pushButtonKomiks_clicked()
-{
-}
-
-void T_Project::on_pushButtonCmyk_clicked()
-{
-}
-
-void T_Project::on_pushButtonDepthmap_clicked()
-{
-}
-
-void T_Project::on_pushButtonColorInverse_clicked()
-{
-}
-
-void T_Project::on_pushButtonBlackNWhite_clicked()
-{
-}
-
-void T_Project::on_pushButtonISONoise_clicked()
-{
-}
-
-void T_Project::on_pushButtonMirrorVertical_clicked()
-{
-}
-
-void T_Project::on_pushButtonMirrorHorizontal_clicked()
-{
-}
-
-void T_Project::on_pushButtonFire_clicked()
-{
-}
-
-void T_Project::on_pushButtonPuzzle_clicked()
-{
-}
-
-void T_Project::on_pushButtonFisheye_clicked()
-{
-}
-
-void T_Project::on_pushButtonSave_clicked()
-{
-}
+{} 
 
 void T_Project::createActions()
 {
@@ -98,7 +39,13 @@ void T_Project::createActions()
     connect(openAct, &QAction::triggered, this, &T_Project::open);
 
     CenzoredAct = new QAction(tr("&Cenzored..."), this);
-    connect(CenzoredAct, &QAction::triggered, oPic, &OriginPicture::cenzored);
+    connect(CenzoredAct, &QAction::triggered, oPic, &OriginPicture::censore);
+
+    FisheyeAct = new QAction(tr("&Fisheye..."), this);
+    connect(FisheyeAct, &QAction::triggered, oPic, &OriginPicture::fisheye);
+
+    CMYKAct = new QAction(tr("&CMYK..."), this);
+    connect(CMYKAct, &QAction::triggered, oPic, &OriginPicture::cmyk);
 }
 
 void T_Project::createMenus()
@@ -109,6 +56,8 @@ void T_Project::createMenus()
     
 
     filterMenu = new QMenu(tr("&Filters"), this);
+    filterMenu->addAction(FisheyeAct);
+    filterMenu->addAction(CMYKAct);
     filterMenu->addAction(CenzoredAct);
 
     menuBar()->addMenu(fileMenu);

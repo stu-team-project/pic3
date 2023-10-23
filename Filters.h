@@ -36,3 +36,23 @@ private:
 
 	QImage updateImage;
 };
+
+class Filters
+{
+public:
+	Filters();
+	~Filters();
+
+	// Nikitas Filters
+	void fisheyeFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D);
+	void cmykFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D);
+
+
+	//Jans Filters
+	void censore(QVector<QVector<QColor>>* VecOfPixelsColor2D);
+
+private:
+	//QVector<QVector<QColor>>* VecOfPixelsColor2D;
+};
+
+

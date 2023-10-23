@@ -8,7 +8,10 @@
 #include "T_Project.h"
 #include "Filters.h"
 
-class OriginPicture :public QWidget 
+class Filters;
+
+class OriginPicture
+	:public QWidget
 {
 	Q_OBJECT
 public:
@@ -18,7 +21,7 @@ public:
 	bool getStatusModified() { return modified; };
 	void setStatusModified(bool status) { modified = status; };
 	bool openImage(const QString& fileName);
-	void drawSomethink();
+	void draw(int width);															//width is for drawing secong image next to first
 	void setPixel(int x, int y, QColor col) { image.setPixelColor(x, y, col); };
 
 	void setWidth(int w) { widthOfPic = w; };
@@ -35,10 +38,15 @@ public:
 	void clearImage();
 	void clearVector2D();
 
-	QVector<QVector<QColor>>& getVec2D() { return PixelColor2D; };
+	QVector<QVector<QColor>>* getVec2D() { return& PixelColor2D; };
 	QColor getColorFromVector(int x, int y) { return PixelColor2D.at(x).at(y); };
 public slots:
-	void cenzored();
+	void draw();
+	void censore();
+
+	void fisheye();
+	void cmyk();
+
 protected:
 	void paintEvent(QPaintEvent* event) override;
 	void mousePressEvent(QMouseEvent* event) override;
@@ -56,13 +64,6 @@ private:
 	QVector<QVector<QColor>> PixelColor2D;
 
 	QPoint lastPoint;
-	//
-	//inspiration from computer graphics
-	//
-	//QPainter* painter = nullptr;
-	//uchar* data = nullptr;
+
+	Filters* filter;
 };
-
-
-
-
