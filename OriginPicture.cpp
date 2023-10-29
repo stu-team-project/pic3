@@ -166,10 +166,22 @@ void OriginPicture::clearVector2D()
 	PixelColor2D.clear();
 }
 
+//void OriginPicture::changePixelInVec(int x, int y, QColor col)
+//{
+//	QVector<QColor> tmp = getVecFromVec2D(x);
+//	tmp.replace(y, col);
+//	PixelColor2D.replace(x, tmp);
+//}
+
 void OriginPicture::censore()
 {
-	filter->censore(this->getVec2D());
-	draw(getWidth());
+	censoreActivate = true;
+	if (censoreActivate&&secondPointForCensoreClicked)
+	{
+		filter->censore(this->getVec2D(), &firstPointCensored, &secondPointCensored);
+		draw(getWidth());
+		censoreActivate = false;
+	}
 }
 
 void OriginPicture::fisheye()
@@ -193,9 +205,26 @@ void OriginPicture::paintEvent(QPaintEvent* event)
 
 void OriginPicture::mousePressEvent(QMouseEvent* event)
 {
-	if (event->button() == Qt::LeftButton) {
-		lastPoint = event->pos();
+	if (event->button() == Qt::LeftButton && censoreActivate)
+	{
+		if (firstPointForCensoreClicked)
+		{
+			secondPointCensored = event->pos();
+			secondPointForCensoreClicked = true;
+			censore();
+			secondPointForCensoreClicked = false;
+			firstPointForCensoreClicked = false;
+		}
+		else
+		{
+			firstPointCensored = event->pos();
+			firstPointForCensoreClicked = true;
+		}
 	}
+
+	/*if (event->button() == Qt::LeftButton) {
+		lastPoint = event->pos();
+	}*/
 }
 
 void OriginPicture::resizeImage(QImage* image, const QSize& newSize)

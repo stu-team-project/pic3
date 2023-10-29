@@ -39,7 +39,9 @@ public:
 	void clearVector2D();
 
 	QVector<QVector<QColor>>* getVec2D() { return& PixelColor2D; };
+	//QVector<QColor> getVecFromVec2D(int x) { return PixelColor2D.at(x); };
 	QColor getColorFromVector(int x, int y) { return PixelColor2D.at(x).at(y); };
+	//void changePixelInVec(int x, int y, QColor col);
 public slots:
 	void draw();
 	void censore();
@@ -66,4 +68,11 @@ private:
 	QPoint lastPoint;
 
 	Filters* filter;
+
+	//for censored filter
+	bool censoreActivate = false;
+	bool firstPointForCensoreClicked = false;
+	bool secondPointForCensoreClicked = false;
+	QPoint firstPointCensored;
+	QPoint secondPointCensored;
 };

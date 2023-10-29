@@ -58,7 +58,42 @@ void Filters::cmykFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D)
 {
 }
 
-void Filters::censore(QVector<QVector<QColor>>* VecOfPixelsColor2D)
+void Filters::censore(QVector<QVector<QColor>>* VecOfPixelsColor2D, QPoint* firstClicked, QPoint* secondClicked)
 {
-	
+	QColor black = Qt::black;
+	int minX, maxX, minY, maxY;
+	if (firstClicked->x() > secondClicked->x())
+	{
+		minX = secondClicked->x();
+		maxX = firstClicked->x();
+	}
+	else
+	{
+		minX = firstClicked->x();
+		maxX = secondClicked->x();
+	}
+	if (firstClicked->y() > secondClicked->y())
+	{
+		minY = secondClicked->y();
+		maxY = firstClicked->y();
+	}
+	else
+	{
+		minY = firstClicked->y();
+		maxY = secondClicked->y();
+	}
+
+	QVector<QColor>tmp;
+
+	for (int i = minY; i < maxY; i++)
+	{
+		tmp = VecOfPixelsColor2D->at(i);
+		for (int j = minX; j < maxX; j++)
+		{
+			tmp.replace(j, black);
+		}
+		VecOfPixelsColor2D->replace(i, tmp);
+		tmp.clear();
+	}
+
 }

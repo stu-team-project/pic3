@@ -2,6 +2,8 @@
 #pragma once
 #include "OriginPicture.h"
 
+class OriginPicture;
+
 class newPicture: public QWidget //: public OriginPicture::QWidget
 {
 	Q_OBJECT
@@ -49,10 +51,13 @@ public:
 
 
 	//Jans Filters
-	void censore(QVector<QVector<QColor>>* VecOfPixelsColor2D);
-
+	void censore(QVector<QVector<QColor>>* VecOfPixelsColor2D, QPoint* firstClicked, QPoint* secondClicked);
+	//void setCensorActivate(bool status) { censoreActivate = status; };
 private:
 	//QVector<QVector<QColor>>* VecOfPixelsColor2D;
+	
+
+	
 };
 
 
