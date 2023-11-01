@@ -1,5 +1,5 @@
 #include "T_Project.h"
-//#include "OriginPicture.h"
+
 #include <fstream>
 #include <QFileDialog>
 #include <string>
@@ -14,17 +14,12 @@
 T_Project::T_Project(QWidget *parent)
     : QMainWindow(parent), 
     oPic(new OriginPicture(this))
-    //filter(new Filters(this))
-    //censore(new censored(oPic))
 {
     setCentralWidget(oPic);
     createActions();
     createMenus();
 
     setWindowTitle(tr("STU_TeamProject"));
-
-    //oPic->setVectorColor(this->getVectorColor2D());
-    //censore->setVectorColor(this->getVectorColor2D());
 
     resize(1000, 1000);
 }
@@ -37,6 +32,10 @@ void T_Project::createActions()
     openAct = new QAction(tr("&Open..."), this);
     openAct->setShortcuts(QKeySequence::Open);
     connect(openAct, &QAction::triggered, this, &T_Project::open);
+
+    saveAct = new QAction(tr("&Save..."), this);
+    saveAct->setShortcuts(QKeySequence::Save);
+    connect(saveAct, &QAction::triggered, this, &T_Project::save);
 
     CenzoredAct = new QAction(tr("&Cenzored..."), this);
     connect(CenzoredAct, &QAction::triggered, oPic, &OriginPicture::censore);
@@ -53,6 +52,7 @@ void T_Project::createMenus()
 
     fileMenu = new QMenu(tr("&File"), this);
     fileMenu->addAction(openAct);
+    fileMenu->addAction(saveAct);
     
 
     filterMenu = new QMenu(tr("&Filters"), this);
@@ -72,6 +72,19 @@ void T_Project::open()
     oPic->openImage(fileName);
 }
 
+void T_Project::save()
+{
+    QByteArray fileFormat = "ppm";
 
+    QString initialPath = QDir::currentPath() + "/untitled." + fileFormat;
 
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save As"),
+        initialPath,
+        tr("%1 Files (*.%2);;All Files (*)")
+        .arg(QString::fromLatin1(fileFormat.toUpper()))
+        .arg(QString::fromLatin1(fileFormat)));
+    if (fileName.isEmpty())
+        return;
 
+    oPic->saveImage(fileName);
+}

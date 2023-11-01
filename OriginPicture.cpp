@@ -53,6 +53,17 @@ int returnIntegerFromString(std::string& line) {
 	return intToReturn;
 }
 
+std::string addPixelToString(QColor col) {
+	std::string tmp;
+	tmp.append(std::to_string(col.red()));
+	tmp.append(" ");
+	tmp.append(std::to_string(col.green()));
+	tmp.append(" ");
+	tmp.append(std::to_string(col.blue()));
+	tmp.append(" ");
+	return tmp;
+}
+
 bool OriginPicture::openImage(const QString& fileName)
 {
 	if (getStatusModified())
@@ -74,6 +85,65 @@ bool OriginPicture::openImage(const QString& fileName)
 	setStatusModified(true);
 	update();
 	return true;
+}
+
+bool OriginPicture::saveImage(const QString& fileName)
+{
+	int maxIndexLine;							// maxLine is for boundary max lenght of line in PPM. It should not be more than 70 
+	int index = 0;
+	if (getWidth() * getHeight() > 20)			// 20 its because one pixel has 3 values. Red, Green and blue. Each value represent one number in line.
+	{
+		maxIndexLine = 20;
+	}
+	else
+	{
+		maxIndexLine = getWidth() * getHeight();
+	}
+
+	std::string stringFileName = fileName.toUtf8().constData();
+	std::string line;
+
+	if (fileName.isEmpty())
+	{
+		return false;
+	}
+	else
+	{
+		if (typeOfPPMpic == "P3")
+		{
+			std::ofstream newFile(stringFileName);
+			if (newFile.is_open())
+			{
+				newFile << typeOfPPMpic << std::endl;
+				newFile << "#" + stringFileName << std::endl;
+				newFile << std::to_string(getWidth()) + " " + std::to_string(getHeight()) << std::endl;
+				newFile << std::to_string(getMaxValueOfPix()) << std::endl;
+				for (int i = 0; i < getHeight(); i++)
+				{
+					for (int j = 0; j < getWidth(); j++) 
+					{
+						line.append(addPixelToString(PixelColor2D.at(i).at(j)));
+						index++;
+						if (index == maxIndexLine)
+						{
+							newFile << line << std::endl;
+							line.clear();
+							index = 0;
+						}
+					}
+				}
+			}
+		}
+		else if (typeOfPPMpic == "P6")
+		{
+			qDebug() << "Jan has to do save for P6 Type";
+		}
+		else
+		{
+			return false;
+		}
+		return true;
+	}
 }
 
 void OriginPicture::draw(int width)
@@ -101,53 +171,61 @@ bool OriginPicture::loadImage(const QString& fileName)
 	if (myfile.is_open())
 	{
 		std::getline(myfile, line);
-		if (line == "P3")
+		if (line == "P3" || line == "P6")
 		{
-			qDebug() << "P3";
+			typeOfPPMpic = line;
+			qDebug() << "correct format.";
 		}
 		else
 		{	
 			//TODO: it could by P6, so I have to do loadImage also for P6 format of PPM
+			qDebug() << "incorrect format.";
 			return false;
 		}
-		std::getline(myfile, line);
-		while (line.at(0) == '#')
+
+		if (typeOfPPMpic == "P3")
 		{
 			std::getline(myfile, line);
-		}
-		width = returnIntegerFromString(line);
-		height = returnIntegerFromString(line);
-
-		setWidth(width);	
-		setHeight(height);
-
-		std::getline(myfile, line);
-		maxValueOfPix = returnIntegerFromString(line);
-		setMaxValueOfPix(maxValueOfPix);
-		
-		while (std::getline(myfile, line))
-		{
-			while (line.length()) 
+			while (line.at(0) == '#')
 			{
-				tmpCol.setRed(returnIntegerFromString(line));
-				tmpCol.setGreen(returnIntegerFromString(line));
-				tmpCol.setBlue(returnIntegerFromString(line));
-				tmpVec.append(tmpCol);
-				if (tmpVec.size() == getWidth())
+				std::getline(myfile, line);
+			}
+			width = returnIntegerFromString(line);
+			height = returnIntegerFromString(line);
+
+			setWidth(width);
+			setHeight(height);
+
+			std::getline(myfile, line);
+			maxValueOfPix = returnIntegerFromString(line);
+			setMaxValueOfPix(maxValueOfPix);
+
+			while (std::getline(myfile, line))
+			{
+				while (line.length())
 				{
-					addVecToPixelCol(tmpVec);
-					tmpVec.clear();
+					tmpCol.setRed(returnIntegerFromString(line));
+					tmpCol.setGreen(returnIntegerFromString(line));
+					tmpCol.setBlue(returnIntegerFromString(line));
+					tmpVec.append(tmpCol);
+					if (tmpVec.size() == getWidth())
+					{
+						addVecToPixelCol(tmpVec);
+						tmpVec.clear();
+					}
 				}
 			}
+			return true;
 		}
-
-		return true;
+		else if (typeOfPPMpic == "P6")
+		{
+			qDebug() << "jan has to do reading for P6 file";
+		}
 	}
 	else
 	{
 		return false;
 	}
-	
 }
 
 void OriginPicture::clearImage()
@@ -165,13 +243,6 @@ void OriginPicture::clearVector2D()
 	}*/
 	PixelColor2D.clear();
 }
-
-//void OriginPicture::changePixelInVec(int x, int y, QColor col)
-//{
-//	QVector<QColor> tmp = getVecFromVec2D(x);
-//	tmp.replace(y, col);
-//	PixelColor2D.replace(x, tmp);
-//}
 
 void OriginPicture::censore()
 {

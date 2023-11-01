@@ -21,6 +21,7 @@ public:
 	bool getStatusModified() { return modified; };
 	void setStatusModified(bool status) { modified = status; };
 	bool openImage(const QString& fileName);
+	bool saveImage(const QString& fileName);
 	void draw(int width);															//width is for drawing secong image next to first
 	void setPixel(int x, int y, QColor col) { image.setPixelColor(x, y, col); };
 
@@ -39,9 +40,7 @@ public:
 	void clearVector2D();
 
 	QVector<QVector<QColor>>* getVec2D() { return& PixelColor2D; };
-	//QVector<QColor> getVecFromVec2D(int x) { return PixelColor2D.at(x); };
 	QColor getColorFromVector(int x, int y) { return PixelColor2D.at(x).at(y); };
-	//void changePixelInVec(int x, int y, QColor col);
 public slots:
 	void draw();
 	void censore();
@@ -57,11 +56,13 @@ private:
 
 	bool modified = false;
 
+	//parameters of picture
 	int widthOfPic;
 	int heightOfPic;
 	int maxValueOfPix;
+	std::string typeOfPPMpic;
 	QImage image;
-	QColor col = Qt::red;
+	//QColor col = Qt::red;
 
 	QVector<QVector<QColor>> PixelColor2D;
 

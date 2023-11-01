@@ -87,7 +87,7 @@
     <QtUic Include="T_Project.ui" />
     <QtMoc Include="T_Project.h" />
     <QtMoc Include="OriginPicture.h" />
-    <QtMoc Include="Filters.h" />
+    <ClInclude Include="Filters.h" />
     <ClCompile Include="T_Project.cpp" />
     <ClCompile Include="OriginPicture.cpp" />
     <ClCompile Include="Filters.cpp" />

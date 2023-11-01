@@ -24,6 +24,7 @@ public:
     //QVector<QVector<QColor>>* getVectorColor2D() { return& PixelColor2D; };
 public slots:
     void open();
+    void save();
     //------------------------------------------
 
 private:
@@ -35,6 +36,7 @@ private:
     //censored* censore;
 
     QAction* openAct;
+    QAction* saveAct;
     QAction* CenzoredAct;
     QAction* FisheyeAct;
     QAction* CMYKAct;
