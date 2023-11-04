@@ -52,6 +52,7 @@ public:
 
 	//Jans Filters
 	void censore(QVector<QVector<QColor>>* VecOfPixelsColor2D, QPoint* firstClicked, QPoint* secondClicked);
+	void blackAndWhite(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width);
 	//void setCensorActivate(bool status) { censoreActivate = status; };
 private:
 	//QVector<QVector<QColor>>* VecOfPixelsColor2D;

@@ -40,6 +40,9 @@ void T_Project::createActions()
     CenzoredAct = new QAction(tr("&Cenzored..."), this);
     connect(CenzoredAct, &QAction::triggered, oPic, &OriginPicture::censore);
 
+    BlackAndWhiteAct = new QAction(tr("&BlackAndWhite..."), this);
+    connect(BlackAndWhiteAct, &QAction::triggered, oPic, &OriginPicture::blackAndWhite);
+
     FisheyeAct = new QAction(tr("&Fisheye..."), this);
     connect(FisheyeAct, &QAction::triggered, oPic, &OriginPicture::fisheye);
 
@@ -59,6 +62,7 @@ void T_Project::createMenus()
     filterMenu->addAction(FisheyeAct);
     filterMenu->addAction(CMYKAct);
     filterMenu->addAction(CenzoredAct);
+    filterMenu->addAction(BlackAndWhiteAct);
 
     menuBar()->addMenu(fileMenu);
     menuBar()->addMenu(filterMenu);

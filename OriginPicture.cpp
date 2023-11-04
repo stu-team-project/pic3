@@ -250,9 +250,15 @@ void OriginPicture::censore()
 	if (censoreActivate&&secondPointForCensoreClicked)
 	{
 		filter->censore(this->getVec2D(), &firstPointCensored, &secondPointCensored);
-		draw(getWidth());
+		draw(getWidth());																//getWidth is for drawing second picture next to first picture.
 		censoreActivate = false;
 	}
+}
+
+void OriginPicture::blackAndWhite()
+{
+	filter->blackAndWhite(this->getVec2D(), this->getHeight(), this->getWidth());
+	draw(getWidth());
 }
 
 void OriginPicture::fisheye()

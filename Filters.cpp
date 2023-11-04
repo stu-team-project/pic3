@@ -97,3 +97,29 @@ void Filters::censore(QVector<QVector<QColor>>* VecOfPixelsColor2D, QPoint* firs
 	}
 
 }
+
+void Filters::blackAndWhite(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width)
+{
+	int gray, red, green, blue;
+	QVector<QColor>tmpVec;
+	QColor grayTmpColor;
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			red = VecOfPixelsColor2D->at(i).at(j).red();
+			green = VecOfPixelsColor2D->at(i).at(j).green();
+			blue = VecOfPixelsColor2D->at(i).at(j).blue();
+
+			gray = (red + green + blue) / 3;
+
+			grayTmpColor.setRed(gray);
+			grayTmpColor.setGreen(gray);
+			grayTmpColor.setBlue(gray);
+
+			tmpVec.append(grayTmpColor);
+		}
+		VecOfPixelsColor2D->replace(i, tmpVec);
+		tmpVec.clear();
+	}
+}

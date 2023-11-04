@@ -38,6 +38,7 @@ private:
     QAction* openAct;
     QAction* saveAct;
     QAction* CenzoredAct;
+    QAction* BlackAndWhiteAct;
     QAction* FisheyeAct;
     QAction* CMYKAct;
 
