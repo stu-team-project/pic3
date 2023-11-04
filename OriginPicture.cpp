@@ -261,6 +261,12 @@ void OriginPicture::blackAndWhite()
 	draw(getWidth());
 }
 
+void OriginPicture::inverse()
+{
+	filter->inverse(this->getVec2D(), this->getHeight(), this->getWidth());
+	draw(getWidth());
+}
+
 void OriginPicture::fisheye()
 {
 	filter->fisheyeFilter(this->getVec2D());

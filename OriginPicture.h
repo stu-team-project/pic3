@@ -45,6 +45,7 @@ public slots:
 	void draw();
 	void censore();
 	void blackAndWhite();
+	void inverse();
 
 	void fisheye();
 	void cmyk();
