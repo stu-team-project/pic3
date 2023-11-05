@@ -273,6 +273,12 @@ void OriginPicture::blur()
 	draw(getWidth());
 }
 
+void OriginPicture::fidingEdge()
+{
+	filter->fidingEdge(this->getVec2D(), this->getHeight(), this->getWidth());
+	draw(getWidth());
+}
+
 void OriginPicture::fisheye()
 {
 	filter->fisheyeFilter(this->getVec2D());

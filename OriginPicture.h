@@ -47,6 +47,7 @@ public slots:
 	void blackAndWhite();
 	void inverse();
 	void blur();
+	void fidingEdge();
 
 	void fisheye();
 	void cmyk();

@@ -49,6 +49,9 @@ void T_Project::createActions()
     BlurAct = new QAction(tr("&Blur..."), this);
     connect(BlurAct, &QAction::triggered, oPic, &OriginPicture::blur);
 
+    FidingEdgeAct = new QAction(tr("&FidingEdge..."), this);
+    connect(FidingEdgeAct, &QAction::triggered, oPic, &OriginPicture::fidingEdge);
+
     FisheyeAct = new QAction(tr("&Fisheye..."), this);
     connect(FisheyeAct, &QAction::triggered, oPic, &OriginPicture::fisheye);
 
@@ -71,6 +74,7 @@ void T_Project::createMenus()
     filterMenu->addAction(BlackAndWhiteAct);
     filterMenu->addAction(InverseAct);
     filterMenu->addAction(BlurAct);
+    filterMenu->addAction(FidingEdgeAct);
 
     menuBar()->addMenu(fileMenu);
     menuBar()->addMenu(filterMenu);

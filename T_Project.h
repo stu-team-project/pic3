@@ -41,6 +41,7 @@ private:
     QAction* BlackAndWhiteAct;
     QAction* InverseAct;
     QAction* BlurAct;
+    QAction* FidingEdgeAct;
 
 
     QAction* FisheyeAct;
