@@ -40,6 +40,7 @@ private:
     QAction* CenzoredAct;
     QAction* BlackAndWhiteAct;
     QAction* InverseAct;
+    QAction* BlurAct;
 
 
     QAction* FisheyeAct;
