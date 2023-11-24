@@ -57,6 +57,9 @@ void T_Project::createActions()
 
     CMYKAct = new QAction(tr("&CMYK..."), this);
     connect(CMYKAct, &QAction::triggered, oPic, &OriginPicture::cmyk);
+
+    denseCMYKAct = new QAction(tr("&DenseCMYK..."), this);
+    connect(denseCMYKAct, &QAction::triggered, oPic, &OriginPicture::densecmyk);
 }
 
 void T_Project::createMenus()
@@ -70,6 +73,7 @@ void T_Project::createMenus()
     filterMenu = new QMenu(tr("&Filters"), this);
     filterMenu->addAction(FisheyeAct);
     filterMenu->addAction(CMYKAct);
+    filterMenu->addAction(denseCMYKAct);
     filterMenu->addAction(CenzoredAct);
     filterMenu->addAction(BlackAndWhiteAct);
     filterMenu->addAction(InverseAct);

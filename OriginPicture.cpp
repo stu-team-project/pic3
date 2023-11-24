@@ -291,6 +291,12 @@ void OriginPicture::cmyk()
 	draw(getWidth());
 }
 
+void OriginPicture::densecmyk()
+{
+	filter->densecmykFilter(this->getVec2D());
+	draw(getWidth());
+}
+
 void OriginPicture::paintEvent(QPaintEvent* event)
 {
 	QPainter painter(this);

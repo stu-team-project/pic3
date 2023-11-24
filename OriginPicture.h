@@ -51,6 +51,7 @@ public slots:
 
 	void fisheye();
 	void cmyk();
+	void densecmyk();
 
 protected:
 	void paintEvent(QPaintEvent* event) override;
