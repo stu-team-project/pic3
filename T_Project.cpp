@@ -60,6 +60,9 @@ void T_Project::createActions()
 
     denseCMYKAct = new QAction(tr("&DenseCMYK..."), this);
     connect(denseCMYKAct, &QAction::triggered, oPic, &OriginPicture::densecmyk);
+
+    ditherCMYKAct = new QAction(tr("&DitherCMYK..."), this);
+    connect(ditherCMYKAct, &QAction::triggered, oPic, &OriginPicture::dithercmyk);
 }
 
 void T_Project::createMenus()
@@ -74,6 +77,8 @@ void T_Project::createMenus()
     filterMenu->addAction(FisheyeAct);
     filterMenu->addAction(CMYKAct);
     filterMenu->addAction(denseCMYKAct);
+    filterMenu->addAction(ditherCMYKAct);
+
     filterMenu->addAction(CenzoredAct);
     filterMenu->addAction(BlackAndWhiteAct);
     filterMenu->addAction(InverseAct);

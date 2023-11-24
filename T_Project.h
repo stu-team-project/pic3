@@ -47,6 +47,7 @@ private:
     QAction* FisheyeAct;
     QAction* CMYKAct;
     QAction* denseCMYKAct;
+    QAction* ditherCMYKAct;
 
     QMenu* fileMenu;
     QMenu* filterMenu;

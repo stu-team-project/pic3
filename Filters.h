@@ -49,6 +49,7 @@ public:
 	void fisheyeFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D);
 	void cmykFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D);
 	void densecmykFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D);
+	void dithercmykFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D);
 
 
 	//Jans Filters

@@ -104,13 +104,12 @@ void Filters::densecmykFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D)
 		for (int j = 0; j < VecOfPixelsColor2D->at(i).size(); j++) {
 			int c, m, y, k;
 			VecOfPixelsColor2D->at(i).at(j).getCmyk(&c, &m, &y, &k);
-			//int decider = randlimit(c + m + y + k + 1);
 			pixel = (j%2) + 2 * (i%2);
 			newColor.setCmyk(0, 0, 0, 0);
 			switch (pixel)
 			{
 			case 0: 
-				decider = randlimit(m + y + k+1); 
+				decider = randlimit(m + y + k + 1);
 				if (decider < m) { newColor.setCmyk(0, 255, 0, 0); }
 				else if (decider < m + y) { newColor.setCmyk(0, 0, 255, 0); }
 				else { newColor.setCmyk(0, 0, 0, 255); }
@@ -143,6 +142,73 @@ void Filters::densecmykFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D)
 		tmpVec.clear();
 	}
 }
+
+void modifyColor(QColor& color, int errorR, int errorG, int errorB, int weight) { //doesn't work, changes nothing
+	color.setRed(qBound(0, color.red() + errorR * weight / 16, 255));
+	color.setGreen(qBound(0, color.green() + errorG * weight / 16, 255));
+	color.setBlue(qBound(0, color.blue() + errorB * weight / 16, 255));
+}
+QColor findClosestColor(QColor& color,  QVector<QColor>& colorset) {
+	int minDist = INT_MAX;
+	QColor closestColor;
+	for (const QColor& col : colorset) {
+		int dist = qPow(col.red() - color.red(), 2) +
+			qPow(col.green() - color.green(), 2) +
+			qPow(col.blue() - color.blue(), 2);
+		if (dist < minDist) {
+			minDist = dist;
+			closestColor = col;
+		}
+	}
+	return closestColor;
+}
+void Filters::dithercmykFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D) {
+	https://en.wikipedia.org/wiki/Floyd%E2%80%93Steinberg_dithering
+	QVector<QVector<QColor>> tmpPixels = *VecOfPixelsColor2D;
+	QVector<QColor> colorset = {
+		QColor::fromRgb(0, 0, 0),      // Black
+		QColor::fromRgb(255, 255, 255),// White
+		QColor::fromRgb(0, 255, 255),  // Cyan
+		QColor::fromRgb(255, 0, 255),  // Magenta
+		QColor::fromRgb(255, 255, 0)   // Yellow
+	};
+	int width = VecOfPixelsColor2D->size();
+	int height = VecOfPixelsColor2D->at(0).size();
+	QColor oldColor, newColor;
+	for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			QColor oldColor = VecOfPixelsColor2D->at(x).at(y);
+			QColor newColor = findClosestColor(oldColor, colorset);
+			tmpPixels[x][y] = newColor;
+
+			int errorR = oldColor.red() - newColor.red();
+			int errorG = oldColor.green() - newColor.green();
+			int errorB = oldColor.blue() - newColor.blue();
+
+			if (x + 1 < width) {
+				modifyColor(tmpPixels[x+1][y], errorR, errorG, errorB, 7);
+			}
+			if (y + 1 < height) {
+				if (x - 1 >= 0) {
+					modifyColor(tmpPixels[x-1][y+1], errorR, errorG, errorB, 3);
+				}
+				modifyColor(tmpPixels[x][y+1], errorR, errorG, errorB, 5);
+				if (x + 1 < width) {
+					modifyColor(tmpPixels[x+1][y+1], errorR, errorG, errorB, 1);
+				}
+			}
+		}
+	}
+	*VecOfPixelsColor2D = tmpPixels;
+	/*for (int y = 0; y < height; y++) {
+		for (int x = 0; x < width; x++) {
+			VecOfPixelsColor2D->at(x).at(y).fromRgb(tmpPixels[x][y].rgb());
+		}
+	}*/
+}
+
+
+
 
 void Filters::censore(QVector<QVector<QColor>>* VecOfPixelsColor2D, QPoint* firstClicked, QPoint* secondClicked)
 {

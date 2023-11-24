@@ -296,6 +296,11 @@ void OriginPicture::densecmyk()
 	filter->densecmykFilter(this->getVec2D());
 	draw(getWidth());
 }
+void OriginPicture::dithercmyk()
+{
+	filter->dithercmykFilter(this->getVec2D());
+	draw(getWidth());
+}
 
 void OriginPicture::paintEvent(QPaintEvent* event)
 {
