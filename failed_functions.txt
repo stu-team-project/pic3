@@ -1,0 +1,133 @@
+
+/* //failed attempt 1
+void Filters::cmykFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D)
+{
+	//no halftone
+	//for each pixel extract C M Y K values
+	//use those values as probabilities to fill the pixel with the according color
+	srand((unsigned int)time(NULL));
+	QVector<QColor> tmpVec;
+	QColor newColor;
+	for (int i = 0; i < VecOfPixelsColor2D->size(); i++) {
+		for (int j = 0; j < VecOfPixelsColor2D->at(i).size(); j++) {
+			int c, m, y, k;
+			VecOfPixelsColor2D->at(i).at(j).getCmyk(&c, &m, &y, &k);
+			int decider = randlimit(c + m + k+1);
+			if (decider < c) {
+				newColor.setCmyk(255, 0, 0, 0);
+			}
+			else if (decider < c + m) {
+				newColor.setCmyk(0, 255, 0, 0);
+			}
+			else {
+				newColor.setCmyk(0, 0, 255, 0);
+			}
+			tmpVec.append(newColor);
+		}
+		VecOfPixelsColor2D->replace(i, tmpVec);
+		tmpVec.clear();
+	}
+}
+*/
+/*
+void Filters::cmykFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D)
+{
+	//no halftone
+	//use 4pixel dithering
+	srand((unsigned int)time(NULL));
+	QVector<QColor> tmpVec;
+	QColor newColor;
+	for (int i = 0; i < VecOfPixelsColor2D->size(); i++) {
+		for (int j = 0; j < VecOfPixelsColor2D->at(i).size(); j++) {
+			int c, m, y, k;
+			int colorstep = 30;
+			int blackstep = 30;
+			VecOfPixelsColor2D->at(i).at(j).getCmyk(&c, &m, &y, &k);
+			//int decider = randlimit(c + m + k + 1);
+			if (i % 2 == 0 && j % 2 == 0) {
+				if (c > colorstep) { newColor.setCmyk(255, 0, 0, 0); }
+				else {
+					newColor.setCmyk(0, 0, 0, 0);
+				};
+			}
+			else if (i % 2 == 1 && j % 2 == 0) {
+				if (m > colorstep) { newColor.setCmyk(0, 255, 0, 0); }
+				else {
+					newColor.setCmyk(0, 0, 0, 0);
+				};
+			}
+			else if (i % 2 == 0 && j % 2 == 1) {
+				if (y > colorstep) { newColor.setCmyk(0, 0, 255, 0); }
+				else {
+					newColor.setCmyk(0, 0, 0, 0);
+				};
+			}
+			else if (i % 2 == 1 && j % 2 == 1) {
+				if (k > blackstep) { newColor.setCmyk(0, 0, 0, 255); }
+				else {
+					newColor.setCmyk(0, 0, 0, 0);
+				};
+			}
+			tmpVec.append(newColor);
+		}
+		VecOfPixelsColor2D->replace(i, tmpVec);
+		tmpVec.clear();
+	}
+}
+*/
+/*
+void Filters::cmykFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D)
+{
+	//no halftone
+	//for each pixel extract C M Y K values
+	//use those values as probabilities to fill the pixel with the according color
+	srand((unsigned int)time(NULL));
+	QVector<QColor> tmpVec;
+	QColor newColor;
+	int decider;
+	int pixel;
+	for (int i = 0; i < VecOfPixelsColor2D->size(); i++) {
+		for (int j = 0; j < VecOfPixelsColor2D->at(i).size(); j++) {
+			int c, m, y, k;
+			VecOfPixelsColor2D->at(i).at(j).getCmyk(&c, &m, &y, &k);
+			//int decider = randlimit(c + m + y + k + 1);
+			pixel = (j%2) + 2 * (i%2);
+			newColor.setCmyk(0, 0, 0, 0);
+			switch (pixel)
+			{
+			case 0: 
+				decider = randlimit(m + y + 255); 
+				if (decider < m) { newColor.setCmyk(0, 255, 0, 0); }
+				else if (decider < m + y) { newColor.setCmyk(0, 0, 255, 0); }
+				else if (decider < m+y+k) { newColor.setCmyk(0, 0, 0, 255); }
+				break;
+			case 1:
+				decider = randlimit(c + y + 255);
+				if (decider < c) { newColor.setCmyk(255, 0, 0, 0); }
+				else if (decider < c + y) { newColor.setCmyk(0, 0, 255, 0); }
+				else if (decider < c + y+k) { newColor.setCmyk(0, 0, 0, 255); }
+				break;
+			case 2:
+				decider = randlimit(c + m + 255);
+				if (decider < c) { newColor.setCmyk(255, 0, 0, 0); }
+				else if (decider < c+m) { newColor.setCmyk(0, 255, 0, 0); }
+				else if (decider < c + m+k) { newColor.setCmyk(0, 0, 0, 255); }
+				break;
+			case 3:
+				decider = randlimit(c + m + y + 255);
+				if (decider < c) { newColor.setCmyk(255, 0, 0, 0); }
+				else if (decider < c + m) { newColor.setCmyk(0, 255, 0, 0); }
+				else if (decider < c + m+y) { newColor.setCmyk(0, 0, 255, 0); }
+				break;
+			default:
+				break;
+			}
+
+			tmpVec.append(newColor);
+		}
+		VecOfPixelsColor2D->replace(i, tmpVec);
+		tmpVec.clear();
+	}
+}
+*/
+

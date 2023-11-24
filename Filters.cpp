@@ -1,5 +1,9 @@
 #include "Filters.h"
 #include <cmath>
+//next 2 for randomness
+#include <random>
+#include <time.h>
+
 
 //newPicture::newPicture(QVector<QVector<QColor>>& PixelColor2D)
 //{
@@ -54,8 +58,90 @@ void Filters::fisheyeFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D)
 {
 }
 
+int randlimit(int limit) { //run """srand((unsigned int)time(NULL));""" first
+	return rand() % limit;
+}
+
 void Filters::cmykFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D)
 {
+	//no halftone
+	//use 4pixel dithering
+	srand((unsigned int)time(NULL));
+	QVector<QColor> tmpVec;
+	QColor newColor;
+	for (int i = 0; i < VecOfPixelsColor2D->size(); i++) {
+		for (int j = 0; j < VecOfPixelsColor2D->at(i).size(); j++) {
+			int c, m, y, k;
+			VecOfPixelsColor2D->at(i).at(j).getCmyk(&c, &m, &y, &k);
+			newColor.setCmyk(0, 0, 0, 0);
+			if (i % 2 == 0 && j % 2 == 0) {
+				if ( c > randlimit(255) ) { newColor.setCmyk(255, 0, 0, 0); }
+			}
+			else if (i % 2 == 1 && j % 2 == 0) {
+				if (m > randlimit(255)) { newColor.setCmyk(0, 255, 0, 0); }
+			}
+			else if (i % 2 == 0 && j % 2 == 1) {
+				if (y > randlimit(255)) { newColor.setCmyk(0, 0, 255, 0); }
+			}
+			else if (i % 2 == 1 && j % 2 == 1) {
+				if (k > randlimit(255)) { newColor.setCmyk(0, 0, 0, 255); }
+			}
+			tmpVec.append(newColor);
+		}
+		VecOfPixelsColor2D->replace(i, tmpVec);
+		tmpVec.clear();
+	}
+}
+
+void Filters::densecmykFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D)
+{
+	srand((unsigned int)time(NULL));
+	QVector<QColor> tmpVec;
+	QColor newColor;
+	int decider;
+	int pixel;
+	for (int i = 0; i < VecOfPixelsColor2D->size(); i++) {
+		for (int j = 0; j < VecOfPixelsColor2D->at(i).size(); j++) {
+			int c, m, y, k;
+			VecOfPixelsColor2D->at(i).at(j).getCmyk(&c, &m, &y, &k);
+			//int decider = randlimit(c + m + y + k + 1);
+			pixel = (j%2) + 2 * (i%2);
+			newColor.setCmyk(0, 0, 0, 0);
+			switch (pixel)
+			{
+			case 0: 
+				decider = randlimit(m + y + k+1); 
+				if (decider < m) { newColor.setCmyk(0, 255, 0, 0); }
+				else if (decider < m + y) { newColor.setCmyk(0, 0, 255, 0); }
+				else { newColor.setCmyk(0, 0, 0, 255); }
+				break;
+			case 1:
+				decider = randlimit(c + y + k + 1);
+				if (decider < c) { newColor.setCmyk(255, 0, 0, 0); }
+				else if (decider < c + y) { newColor.setCmyk(0, 0, 255, 0); }
+				else  { newColor.setCmyk(0, 0, 0, 255); }
+				break;
+			case 2:
+				decider = randlimit(c + m + k + 1);
+				if (decider < c) { newColor.setCmyk(255, 0, 0, 0); }
+				else if (decider < c+m) { newColor.setCmyk(0, 255, 0, 0); }
+				else  { newColor.setCmyk(0, 0, 0, 255); }
+				break;
+			case 3:
+				decider = randlimit(c + m + y + 1);
+				if (decider < c) { newColor.setCmyk(255, 0, 0, 0); }
+				else if (decider < c + m) { newColor.setCmyk(0, 255, 0, 0); }
+				else  { newColor.setCmyk(0, 0, 255, 0); }
+				break;
+			default:
+				break;
+			}
+
+			tmpVec.append(newColor);
+		}
+		VecOfPixelsColor2D->replace(i, tmpVec);
+		tmpVec.clear();
+	}
 }
 
 void Filters::censore(QVector<QVector<QColor>>* VecOfPixelsColor2D, QPoint* firstClicked, QPoint* secondClicked)
