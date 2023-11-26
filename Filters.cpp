@@ -301,6 +301,41 @@ void Filters::inverse(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, 
 	}
 }
 
+void Filters::redFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width)
+{
+	int red, green, blue, average;
+	QVector<QColor>tmpVec;
+	QColor redTmpColor;
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			red = VecOfPixelsColor2D->at(i).at(j).red();
+			green = VecOfPixelsColor2D->at(i).at(j).green();
+			blue = VecOfPixelsColor2D->at(i).at(j).blue();
+
+			average = (red + green + blue) / 3;
+
+			if (red + 100 >255)
+			{
+				red = 255;
+			}
+			else
+			{
+				red += 100;
+			}
+
+			redTmpColor.setRed(red);
+			redTmpColor.setGreen(green);
+			redTmpColor.setBlue(blue);
+
+			tmpVec.append(redTmpColor);
+		}
+		VecOfPixelsColor2D->replace(i, tmpVec);
+		tmpVec.clear();
+	}
+}
+
 void Filters::blur(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width, int variance)
 {
 	const QVector<QVector<QColor>> tmpVecOfPixelsColor2D = *VecOfPixelsColor2D;
@@ -308,21 +343,8 @@ void Filters::blur(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int
 	QVector<QColor>tmpVec;
 	QVector<int> RGB;
 	QColor blurColor, averageColor;
-	int red(0), green(0), blue(0), sum(0);
-
-	for (int i = 0; i < height; i++)
-	{
-		for (int j = 0; j < width; j++)
-		{
-			red += VecOfPixelsColor2D->at(i).at(j).red();
-			green += VecOfPixelsColor2D->at(i).at(j).green();
-			blue += VecOfPixelsColor2D->at(i).at(j).blue();
-			sum++;
-		}
-	}	
-	averageColor.setRed(red / sum);
-	averageColor.setGreen(green / sum);
-	averageColor.setBlue(blue / sum);
+	
+	averageColor = getAveragePixel(VecOfPixelsColor2D);
 
 	for (int i = 0; i < height; i++)
 	{
@@ -523,4 +545,27 @@ const QVector<QColor> Filters::fillMask(const QVector<QVector<QColor>>* tmpVecOf
 	}
 
 	return vecOfMask;
+}
+
+const QColor Filters::getAveragePixel(const QVector<QVector<QColor>>* VecOfPixelsColor2D)
+{
+	QColor averageColor;
+	int red(0), green(0), blue(0), sum(0);
+	int height = VecOfPixelsColor2D->size();
+	int width = VecOfPixelsColor2D->at(0).size();
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			red += VecOfPixelsColor2D->at(i).at(j).red();
+			green += VecOfPixelsColor2D->at(i).at(j).green();
+			blue += VecOfPixelsColor2D->at(i).at(j).blue();
+			sum++;
+		}
+	}
+	averageColor.setRed(red / sum);
+	averageColor.setGreen(green / sum);
+	averageColor.setBlue(blue / sum);
+
+	return averageColor;
 }

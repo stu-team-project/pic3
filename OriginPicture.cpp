@@ -267,6 +267,12 @@ void OriginPicture::inverse()
 	draw(getWidth());
 }
 
+void OriginPicture::redFilter()
+{
+	filter->redFilter(this->getVec2D(), this->getHeight(), this->getWidth());
+	draw(getWidth());
+}
+
 void OriginPicture::blur3x3()
 {
 	filter->blur3x3(this->getVec2D(), this->getHeight(), this->getWidth());

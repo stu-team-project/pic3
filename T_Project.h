@@ -41,6 +41,7 @@ private:
     QAction* InverseAct;
     QList<QAction*> BlurActs;
     QAction* FidingEdgeAct;
+    QAction* RedFilterAct;
 
 
     QAction* FisheyeAct;

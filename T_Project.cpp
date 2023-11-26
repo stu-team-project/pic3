@@ -46,6 +46,9 @@ void T_Project::createActions()
     InverseAct = new QAction(tr("&Inverse..."), this);
     connect(InverseAct, &QAction::triggered, oPic, &OriginPicture::inverse);
 
+    RedFilterAct = new QAction(tr("&Red Filter..."), this);
+    connect(RedFilterAct, &QAction::triggered, oPic, &OriginPicture::redFilter);
+
     QAction* action3x3 = new QAction(tr("&BlurMask3x3..."), this);
     connect(action3x3, &QAction::triggered, oPic, &OriginPicture::blur3x3);
     BlurActs.append(action3x3);
@@ -97,6 +100,7 @@ void T_Project::createMenus()
     filterMenu->addAction(CenzoredAct);
     filterMenu->addAction(BlackAndWhiteAct);
     filterMenu->addAction(InverseAct);
+    filterMenu->addAction(RedFilterAct);
     filterMenu->addAction(FidingEdgeAct);
 
     menuBar()->addMenu(fileMenu);
