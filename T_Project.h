@@ -33,14 +33,13 @@ private:
 
     OriginPicture* oPic;
     Filters* filter;
-    //censored* censore;
 
     QAction* openAct;
     QAction* saveAct;
     QAction* CenzoredAct;
     QAction* BlackAndWhiteAct;
     QAction* InverseAct;
-    QAction* BlurAct;
+    QList<QAction*> BlurActs;
     QAction* FidingEdgeAct;
 
 
@@ -49,8 +48,10 @@ private:
     QAction* denseCMYKAct;
     QAction* ditherCMYKAct;
 
+    QMenu* blurMasksMenu;
     QMenu* fileMenu;
     QMenu* filterMenu;
+    
 
     //---------------------------------------------
     //QVector<QVector<QColor>> PixelColor2D;

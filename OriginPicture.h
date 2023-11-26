@@ -46,7 +46,9 @@ public slots:
 	void censore();
 	void blackAndWhite();
 	void inverse();
-	void blur();
+	void blur3x3();
+	void blur5x5();
+	void blur7x7();
 	void fidingEdge();
 
 	void fisheye();

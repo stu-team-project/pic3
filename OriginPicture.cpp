@@ -267,9 +267,21 @@ void OriginPicture::inverse()
 	draw(getWidth());
 }
 
-void OriginPicture::blur()
+void OriginPicture::blur3x3()
 {
-	filter->blur(this->getVec2D(), this->getHeight(), this->getWidth());
+	filter->blur3x3(this->getVec2D(), this->getHeight(), this->getWidth());
+	draw(getWidth());
+}
+
+void OriginPicture::blur5x5()
+{
+	filter->blur5x5(this->getVec2D(), this->getHeight(), this->getWidth());
+	draw(getWidth());
+}
+
+void OriginPicture::blur7x7()
+{
+	filter->blur7x7(this->getVec2D(), this->getHeight(), this->getWidth());
 	draw(getWidth());
 }
 

@@ -56,11 +56,14 @@ public:
 	void censore(QVector<QVector<QColor>>* VecOfPixelsColor2D, QPoint* firstClicked, QPoint* secondClicked);
 	void blackAndWhite(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width);
 	void inverse(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width);
-	void blur(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width);
+	void blur(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width, int variance);
+	void blur3x3(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width);
+	void blur5x5(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width);
+	void blur7x7(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width);
 	void fidingEdge(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width);
 	//void setCensorActivate(bool status) { censoreActivate = status; };
 
-	const QVector<int> gaussMask(QVector<QColor>* mask);
+	const QVector<int> gaussMask(QVector<QColor>* mask, int variance);
 	const QVector<int> SobelOperatorX(QVector<QColor>* mask);
 	const QVector<int> SobelOperatorY(QVector<QColor>* mask);
 	const QVector<QColor> fillMask(const QVector<QVector<QColor>>* tmpVecOfPixelsColor2D, QColor averageColor, int i, int j, int height, int width, int variance);

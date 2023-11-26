@@ -46,8 +46,17 @@ void T_Project::createActions()
     InverseAct = new QAction(tr("&Inverse..."), this);
     connect(InverseAct, &QAction::triggered, oPic, &OriginPicture::inverse);
 
-    BlurAct = new QAction(tr("&Blur..."), this);
-    connect(BlurAct, &QAction::triggered, oPic, &OriginPicture::blur);
+    QAction* action3x3 = new QAction(tr("&BlurMask3x3..."), this);
+    connect(action3x3, &QAction::triggered, oPic, &OriginPicture::blur3x3);
+    BlurActs.append(action3x3);
+
+    QAction* action5x5 = new QAction(tr("&BlurMask5x5..."), this);
+    connect(action5x5, &QAction::triggered, oPic, &OriginPicture::blur5x5);
+    BlurActs.append(action5x5);
+
+    QAction* action7x7 = new QAction(tr("&BlurMask7x7..."), this);
+    connect(action7x7, &QAction::triggered, oPic, &OriginPicture::blur7x7);
+    BlurActs.append(action7x7);
 
     FidingEdgeAct = new QAction(tr("&FidingEdge..."), this);
     connect(FidingEdgeAct, &QAction::triggered, oPic, &OriginPicture::fidingEdge);
@@ -72,6 +81,9 @@ void T_Project::createMenus()
     fileMenu->addAction(openAct);
     fileMenu->addAction(saveAct);
     
+	blurMasksMenu = new QMenu(tr("&Blur"), this);
+	for (QAction* action : qAsConst(BlurActs))
+		blurMasksMenu->addAction(action);
 
     filterMenu = new QMenu(tr("&Filters"), this);
     filterMenu->addAction(FisheyeAct);
@@ -79,10 +91,12 @@ void T_Project::createMenus()
     filterMenu->addAction(denseCMYKAct);
     filterMenu->addAction(ditherCMYKAct);
 
+    filterMenu->addSeparator();
+
+    filterMenu->addMenu(blurMasksMenu);
     filterMenu->addAction(CenzoredAct);
     filterMenu->addAction(BlackAndWhiteAct);
     filterMenu->addAction(InverseAct);
-    filterMenu->addAction(BlurAct);
     filterMenu->addAction(FidingEdgeAct);
 
     menuBar()->addMenu(fileMenu);

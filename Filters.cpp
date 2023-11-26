@@ -301,7 +301,7 @@ void Filters::inverse(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, 
 	}
 }
 
-void Filters::blur(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width)
+void Filters::blur(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width, int variance)
 {
 	const QVector<QVector<QColor>> tmpVecOfPixelsColor2D = *VecOfPixelsColor2D;
 	QVector<QColor>boundaryOfPixel;
@@ -328,9 +328,9 @@ void Filters::blur(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int
 	{
 		for (int j = 0; j < width; j++) 
 		{
-			boundaryOfPixel = fillMask(&tmpVecOfPixelsColor2D, averageColor,i,j,height,width,1);
+			boundaryOfPixel = fillMask(&tmpVecOfPixelsColor2D, averageColor,i,j,height,width,variance);
 
-			RGB = gaussMask(&boundaryOfPixel);
+			RGB = gaussMask(&boundaryOfPixel, variance);
 			blurColor.setRed(RGB.at(0));
 			blurColor.setGreen(RGB.at(1));
 			blurColor.setBlue(RGB.at(2));
@@ -341,6 +341,21 @@ void Filters::blur(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int
 		VecOfPixelsColor2D->replace(i, tmpVec);
 		tmpVec.clear();
 	}
+}
+
+void Filters::blur3x3(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width)
+{
+	blur(VecOfPixelsColor2D, height, width,1);
+}
+
+void Filters::blur5x5(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width)
+{
+	blur(VecOfPixelsColor2D, height, width, 2);
+}
+
+void Filters::blur7x7(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width)
+{
+	blur(VecOfPixelsColor2D, height, width, 3);
 }
 
 void Filters::fidingEdge(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width)
@@ -395,26 +410,44 @@ void Filters::fidingEdge(QVector<QVector<QColor>>* VecOfPixelsColor2D, int heigh
 	}
 }
 
-const QVector<int> Filters::gaussMask(QVector<QColor>* mask)
+const QVector<int> Filters::gaussMask(QVector<QColor>* mask, int variance)
 {
 	QVector<int> returnRGB;
-	QVector<int> valueOfMask{1,2,1,2,4,2,1,2,1};
-	int red(0), green(0), blue(0);
+	QVector<int> valueOfMask;
+	if (variance == 1)
+	{
+		valueOfMask = { 1,2,1,2,4,2,1,2,1 };
+	}
+	else if (variance == 2)
+	{
+		valueOfMask = { 1,4,7,4,1,4,16,26,16,4,7,26,41,26,7,4,16,26,16,4,1,4,7,4,1 };
+	}
+	else if (variance == 3)
+	{
+		valueOfMask = { 0,0,1,2,1,0,0,0,3,13,22,13,3,0,1,13,59,97,59,13,1,2,22,97,159,97,22,2,1,13,59,97,59,13,1,0,3,13,22,13,3,0,0,0,1,2,1,0,0 };
+	}
+	else
+	{
+		qDebug() << "incorrect value of Variance in function gaussMask";
+	}
+	
+	int red(0), green(0), blue(0), sumOfMaskValues(0);
 
 	for (int i = 0; i < valueOfMask.size(); i++)
 	{
 		red += mask->at(i).red() * valueOfMask.at(i);
 		green += mask->at(i).green() * valueOfMask.at(i);
 		blue += mask->at(i).blue() * valueOfMask.at(i);
+		sumOfMaskValues += valueOfMask.at(i);
 	}
 
-	red = red / 16;
+	red = red / sumOfMaskValues;
 	returnRGB.append(red);
 
-	green = green / 16;
+	green = green / sumOfMaskValues;
 	returnRGB.append(green);
 
-	blue = blue / 16;
+	blue = blue / sumOfMaskValues;
 	returnRGB.append(blue);
 
 	return returnRGB;
