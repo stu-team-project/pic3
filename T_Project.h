@@ -42,6 +42,8 @@ private:
     QList<QAction*> BlurActs;
     QAction* FidingEdgeAct;
     QAction* RedFilterAct;
+    QAction* GreenFilterAct;
+    QAction* BlueFilterAct;
 
 
     QAction* FisheyeAct;

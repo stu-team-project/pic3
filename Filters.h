@@ -57,6 +57,8 @@ public:
 	void blackAndWhite(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width);
 	void inverse(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width);
 	void redFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width);
+	void greenFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width);
+	void blueFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width);
 	void blur(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width, int variance);
 	void blur3x3(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width);
 	void blur5x5(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width);

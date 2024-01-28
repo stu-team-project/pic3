@@ -47,6 +47,8 @@ public slots:
 	void blackAndWhite();
 	void inverse();
 	void redFilter();
+	void greenFilter();
+	void blueFilter();
 	void blur3x3();
 	void blur5x5();
 	void blur7x7();

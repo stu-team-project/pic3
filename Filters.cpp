@@ -306,6 +306,7 @@ void Filters::redFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height
 	int red, green, blue, average;
 	QVector<QColor>tmpVec;
 	QColor redTmpColor;
+	
 	for (int i = 0; i < height; i++)
 	{
 		for (int j = 0; j < width; j++)
@@ -314,22 +315,83 @@ void Filters::redFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height
 			green = VecOfPixelsColor2D->at(i).at(j).green();
 			blue = VecOfPixelsColor2D->at(i).at(j).blue();
 
-			average = (red + green + blue) / 3;
+			red = (red - blue) + (red - green);
 
-			if (red + 100 >255)
+			if (red >255)
 			{
 				red = 255;
 			}
-			else
-			{
-				red += 100;
-			}
 
 			redTmpColor.setRed(red);
-			redTmpColor.setGreen(green);
-			redTmpColor.setBlue(blue);
+			redTmpColor.setGreen(0);
+			redTmpColor.setBlue(0);
 
 			tmpVec.append(redTmpColor);
+		}
+		VecOfPixelsColor2D->replace(i, tmpVec);
+		tmpVec.clear();
+	}
+}
+
+void Filters::greenFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width)
+{
+	int red, green, blue, average;
+	QVector<QColor>tmpVec;
+	QColor TmpColor;
+
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			red = VecOfPixelsColor2D->at(i).at(j).red();
+			green = VecOfPixelsColor2D->at(i).at(j).green();
+			blue = VecOfPixelsColor2D->at(i).at(j).blue();
+
+			green = (green - blue) + (green - red);
+
+			if (green > 255)
+			{
+				green = 255;
+			}
+
+			TmpColor.setRed(0);
+			TmpColor.setGreen(green);
+			TmpColor.setBlue(0);
+
+			tmpVec.append(TmpColor);
+		}
+		VecOfPixelsColor2D->replace(i, tmpVec);
+		tmpVec.clear();
+	}
+}
+
+void Filters::blueFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D, int height, int width)
+{
+	int red, green, blue, average;
+	QVector<QColor>tmpVec;
+	QColor TmpColor;
+	QColor averageColor = getAveragePixel(VecOfPixelsColor2D);
+
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			red = VecOfPixelsColor2D->at(i).at(j).red();
+			green = VecOfPixelsColor2D->at(i).at(j).green();
+			blue = VecOfPixelsColor2D->at(i).at(j).blue();
+
+			blue = (blue - red) + (blue - green) + 50;
+
+			if (blue > 255)
+			{
+				blue = 255;
+			}
+
+			TmpColor.setRed(/*averageColor.red()*/ 0);
+			TmpColor.setGreen(/*averageColor.green()*/ 0);
+			TmpColor.setBlue(blue);
+
+			tmpVec.append(TmpColor);
 		}
 		VecOfPixelsColor2D->replace(i, tmpVec);
 		tmpVec.clear();
