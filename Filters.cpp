@@ -370,7 +370,6 @@ void Filters::blueFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D, int heigh
 	int red, green, blue, average;
 	QVector<QColor>tmpVec;
 	QColor TmpColor;
-	QColor averageColor = getAveragePixel(VecOfPixelsColor2D);
 
 	for (int i = 0; i < height; i++)
 	{
@@ -387,8 +386,8 @@ void Filters::blueFilter(QVector<QVector<QColor>>* VecOfPixelsColor2D, int heigh
 				blue = 255;
 			}
 
-			TmpColor.setRed(/*averageColor.red()*/ 0);
-			TmpColor.setGreen(/*averageColor.green()*/ 0);
+			TmpColor.setRed(0);
+			TmpColor.setGreen(0);
 			TmpColor.setBlue(blue);
 
 			tmpVec.append(TmpColor);
